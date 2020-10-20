@@ -31,9 +31,16 @@ export const removeTodo = (id) => (dispatch) => {
   })
 }
 
-export const addTodo = (obj) => (dispatch) => {
-  axios.post("/api/todos", { obj }).then((resp) => {
-    console.log(obj)
+export const addTodo = (text) => (dispatch) => {
+  axios.post("/api/todos", { description: text }).then((resp) => {
+    // console.log(obj)
+    dispatch(todosAsync())
+  })
+}
+
+export const updateTodo = (obj) => (dispatch) => {
+  axios.patch("/api/todos" + obj.id, { status: obj.status }).then((resp) => {
+    // console.log(obj)
     dispatch(todosAsync())
   })
 }

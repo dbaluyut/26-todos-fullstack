@@ -1,7 +1,12 @@
 import React, { useState, useEffect } from "react"
 import { useSelector, useDispatch } from "react-redux"
-import Todo from "./Todo"
-import { selectTodos, todosAsync, removeTodo, addTodo } from "./todoListSlice"
+import {
+  selectTodos,
+  todosAsync,
+  removeTodo,
+  addTodo,
+  updateTodo,
+} from "./todoListSlice"
 
 function TodoList() {
   const dispatch = useDispatch()
@@ -16,9 +21,12 @@ function TodoList() {
     dispatch(addTodo(inputText))
   }
 
+  function handleActive(id, status) {
+    updateTodo({ id, status })
+  }
+
   return (
-    <div>
-      <li>{inputText}</li>
+    <div className="todo-container">
       <form onSubmit={(e) => handleSubmit(e)}>
         <input
           type="text"
@@ -29,8 +37,16 @@ function TodoList() {
       {todos.map((todo) => {
         return (
           <li key={todo.id}>
-            {todo.description}
+            <button
+              onClick={() => dispatch(handleActive(todo.id, "completed"))}
+            >
+              done
+            </button>
+            <button onClick={() => dispatch(handleActive(todo.id, "active"))}>
+              !done
+            </button>
             <button onClick={() => dispatch(removeTodo(todo.id))}>x</button>
+            <span>{todo.description}</span>
           </li>
         )
       })}
